@@ -105,22 +105,32 @@ for link in book_links:
             description = "N/A"
 
         # 分級和商品規格
-        grade = ""
-        specs = ""
+        grade = "N/A"
+        specs = "N/A"
         try:
-            grade_elements = driver.find_elements(By.CLASS_NAME, "table_2col_deda")
-            if grade_elements:
-                for element in grade_elements:
-                    label = element.find_element(By.CLASS_NAME, "table_th").text
-                    if label == "分級":
-                        grade = element.find_element(By.CLASS_NAME, "table_td").text
-                    elif label == "商品規格":
-                        specs = element.find_element(By.CLASS_NAME, "table_td").text
+            # 找到所有包含分級和商品規格的元素
+            table_units = driver.find_elements(By.CLASS_NAME, "table_1unit_deda")
+            if len(table_units) >= 3:
+                # 提取第二個 table_1unit_deda 中的第二個 table_td 值作為分級
+                try:
+                    grade_element = table_units[1].find_elements(By.CLASS_NAME, "table_td")[1]
+                    grade = grade_element.text.strip()
+                except (IndexError, NoSuchElementException):
+                    print(f"無法找到分級元素：{link}")
+                    grade = "N/A"
+
+                # 提取第三個 table_1unit_deda 中的第二個 table_td 值作為商品規格
+                try:
+                    specs_element = table_units[2].find_elements(By.CLASS_NAME, "table_td")[1]
+                    specs = specs_element.text.strip()
+                except (IndexError, NoSuchElementException):
+                    print(f"無法找到商品規格元素：{link}")
+                    specs = "N/A"
         except NoSuchElementException:
             print(f"無法找到分級或商品規格元素：{link}")
 
         # 收集資料
-        book_data.append({
+        book_info = {
             "Title": title,
             "Image URL": image_url,
             "Price": price,
@@ -128,7 +138,11 @@ for link in book_links:
             "Grade": grade,
             "Specification": specs,
             "Link": link
-        })
+        }
+        book_data.append(book_info)
+
+        # 列出抓取的書籍資訊
+        print(book_info)
 
     except TimeoutException:
         print(f"無法抓取資料：{link}，原因：等待元素超時")
@@ -145,3 +159,4 @@ print("資料已匯出至 kingstone_books.csv")
 
 # 關閉瀏覽器
 driver.quit()
+
