@@ -5,9 +5,9 @@ from urllib.parse import urlparse, parse_qs
 
 # 設定 WooCommerce API 憲證
 wcapi = API(
-    url="http://52.192.228.25/",  # 替換為你的 WooCommerce 網站 URL
-    consumer_key="ck_2ba733f257100d48cd27e9553befe870cfff9694",  # 替換為你的 API Key
-    consumer_secret="cs_78573ea041f71c9005bfcf14896e654e0de628b9",  # 替換為你的 API Secret
+    url="http://54.199.115.191/",  # 替換為你的 WooCommerce 網站 URL
+    consumer_key="ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a",  # 替換為你的 API Key
+    consumer_secret="cs_0b7d56a082508cc8543aab6765c5794698d7e5c3",  # 替換為你的 API Secret
     version="wc/v3"
 )
 
