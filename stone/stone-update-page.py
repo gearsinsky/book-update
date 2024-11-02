@@ -23,10 +23,11 @@ driver = webdriver.Remote(
 )
 
 # 設定要抓取的頁數
-num_pages = 10
+start_page = 51
+end_page = 80
 
 # 迴圈遍歷每一頁
-for page in range(1, num_pages + 1):
+for page in range(start_page, end_page + 1):
     # Step 1: 登入金石堂網站
     try:
         driver.get("https://www.kingstone.com.tw/login")

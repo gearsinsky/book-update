@@ -1,14 +1,13 @@
 import csv
-import requests
-from woocommerce import API
-from urllib.parse import urlparse, parse_qs
 import os
+from woocommerce import API
+from urllib.parse import urlparse
 
 # 設定 WooCommerce API 憲證
 wcapi = API(
-    url="http://52.192.228.25/",  # 替換為你的 WooCommerce 網站 URL
-    consumer_key="ck_2ba733f257100d48cd27e9553befe870cfff9694",  # 替換為你的 API Key
-    consumer_secret="cs_78573ea041f71c9005bfcf14896e654e0de628b9",  # 替換為你的 API Secret
+    url="http://54.199.115.191/",  # 替換為你的 WooCommerce 網站 URL
+    consumer_key="ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a",  # 替換為你的 API Key
+    consumer_secret="cs_0b7d56a082508cc8543aab6765c5794698d7e5c3",  # 替換為你的 API Secret
     version="wc/v3"
 )
 
@@ -18,13 +17,30 @@ def read_csv_file(csv_file_path):
     with open(csv_file_path, 'r', encoding='utf-8-sig') as f:  # 使用 'utf-8-sig' 去除 BOM
         reader = csv.DictReader(f)
         # 去除 BOM 對欄位名稱的影響，並進一步去除隱藏字符
-        reader.fieldnames = [field.strip().replace('﻿', '').replace('﻿', '') for field in reader.fieldnames]
+        reader.fieldnames = [field.strip().replace('﻿', '') for field in reader.fieldnames]
         # 檢查 CSV 文件的欄位名稱
         print(f"讀取到的 CSV 欄位名稱: {reader.fieldnames}")
         for row in reader:
             products.append(row)
     return products
 
+# 將多個產品上傳到 WooCommerce
+def upload_products_from_multiple_csvs(csv_folder_path):
+    existing_titles = set()
+    for filename in os.listdir(csv_folder_path):
+        if filename.endswith(".csv"):
+            csv_file_path = os.path.join(csv_folder_path, filename)
+            print(f"正在讀取文件: {filename}")
+            products = read_csv_file(csv_file_path)
+            if len(products) == 0:
+                print(f"CSV 文件 {filename} 沒有讀取到任何產品，請檢查文件格式或路徑是否正確。")
+                continue
+
+            # 遍檢所有產品並上傳
+            for product in products:
+                upload_product_to_woocommerce(product, existing_titles)
+
+# 輔助函數
 # 提取實際圖片 URL
 def extract_image_url(image_url):
     parsed_url = urlparse(image_url)
@@ -154,24 +170,9 @@ def upload_product_to_woocommerce(product, existing_titles):
         print(f"發生錯誤: {str(e)} 在上傳產品: {product['Title']}")
 
 if __name__ == '__main__':
-    # 設定包含所有 CSV 文件的目錄
-    csv_directory = '/home/ubuntu/books/stone/'  # 替換為包含所有 CSV 文件的目錄路徑
+    # 設定 CSV 文件夾的路徑
+    csv_folder_path = '/home/ubuntu/books/stone/'  # 替換為包含所有 CSV 文件的文件夾路徑
 
-    # 保存已上傳的商品名稱以避免重複上傳
-    existing_titles = set()
-
-    # 遍歷目錄中的所有 CSV 文件
-    for filename in os.listdir(csv_directory):
-        if filename.endswith('.csv'):
-            csv_file_path = os.path.join(csv_directory, filename)
-            print(f"正在處理文件: {csv_file_path}")
-            products = read_csv_file(csv_file_path)
-
-            # 確認 CSV 檔案是否成功載入
-            if len(products) == 0:
-                print(f"CSV 文件沒有讀取到任何產品，請檢查文件格式或路徑是否正確: {csv_file_path}")
-            else:
-                # 遍檢所有產品並上傳
-                for product in products:
-                    upload_product_to_woocommerce(product, existing_titles)
+    # 從多個 CSV 文件讀取並上傳產品
+    upload_products_from_multiple_csvs(csv_folder_path)
 
