@@ -12,7 +12,7 @@ selenium_hub_url = "http://localhost:4444/wd/hub"
 
 # 設定 ChromeOptions，例如無頭模式等
 chrome_options = Options()
-# chrome_options.add_argument("--headless")  # 暫時去掉無頭模式以便調試  # 可以選擇是否使用無頭模式
+# chrome_options.add_argument("--headless")  # 暫時去掉無頭模式以便調試
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
@@ -41,7 +41,7 @@ try:
     login_button = driver.find_element(By.CLASS_NAME, "bt-samp37.login_style")
     print("嘗試點擊登入按鈕")
     driver.execute_script("arguments[0].click();", login_button)
-    print("登入按鈕已點擊")  # 點擊按鈕執行 JavaScript 的 `finish()` 函數
+    print("登入按鈕已點擊")
 
     # 等待登入完成後的頁面加載
     wait.until(EC.url_changes(login_url))  # 等待 URL 變化來確認登入是否成功
@@ -82,6 +82,21 @@ for page in range(start_page, end_page + 1):
     except TimeoutException:
         print(f"頁面 {page} 加載超時，請檢查網頁是否正常加載。")
         continue
+
+    # 滾動頁面以確保所有圖片都被加載
+    scroll_pause_time = 2  # 滾動後的等待時間
+    while True:
+        # 滾動到頁面底部
+        driver.execute_script("window.scrollBy(0, window.innerHeight);")
+        time.sleep(scroll_pause_time)
+
+        # 獲取當前的頁面高度
+        current_height = driver.execute_script("return window.scrollY + window.innerHeight")
+        total_height = driver.execute_script("return document.body.scrollHeight")
+
+        # 如果滾動到達頁面底部，則跳出迴圈
+        if current_height >= total_height:
+            break
 
     # Step 3: 抓取每本書的資訊
     book_data = []  # 書籍的每頁資料
