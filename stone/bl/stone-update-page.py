@@ -23,8 +23,8 @@ driver = webdriver.Remote(
 )
 
 # 設定要抓取的頁數
-start_page = 111
-end_page = 116
+start_page = 1
+end_page = 3
 
 # 迴圈遍歷每一頁
 for page in range(start_page, end_page + 1):

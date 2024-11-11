@@ -1,37 +1,62 @@
 import requests
-from requests.auth import HTTPBasicAuth
+import collections
+import base64
 
-# 設定 API Key 和 API Secret
+# 配置 API 的基本資訊
 API_URL = "https://54.199.115.191/wp-json/wc/v3/products"
 API_KEY = "ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a"
 API_SECRET = "cs_0b7d56a082508cc8543aab6765c5794698d7e5c3"
 
-# 獲取所有商品
-response = requests.get(API_URL, auth=HTTPBasicAuth(API_KEY, API_SECRET), verify=False)
+# 創建基本授權頭
+auth = base64.b64encode(f"{API_KEY}:{API_SECRET}".encode()).decode()
+headers = {
+    "Authorization": f"Basic {auth}"
+}
 
-if response.status_code == 200:
-    products = response.json()
-    product_dict = {}
-    duplicate_found = False
+# 獲取所有商品（使用分頁）
+products = []
+page = 1
+while True:
+    response = requests.get(API_URL, headers=headers, params={"per_page": 100, "page": page}, verify=False)
+    
+    # 驗證請求是否成功
+    if response.status_code != 200:
+        print(f"無法獲取商品，錯誤代碼：{response.status_code}")
+        exit()
 
-    # 找到重複商品
-    for product in products:
-        name = product['name']
-        if name in product_dict:
-            duplicate_found = True
-            print(f"找到重複商品: {name}")
-            # 刪除重複商品
-            duplicate_id = product['id']
-            delete_response = requests.delete(f"{API_URL}/{duplicate_id}", auth=HTTPBasicAuth(API_KEY, API_SECRET), verify=False)
+    # 將當前頁面的商品加入總列表
+    page_products = response.json()
+    if not page_products:
+        # 如果當前頁面沒有商品，說明已經到達最後一頁
+        break
+
+    products.extend(page_products)
+    page += 1
+
+print(f"總共獲取到 {len(products)} 個商品。")
+
+# 構建商品名稱對應的商品列表
+product_dict = collections.defaultdict(list)
+for product in products:
+    product_dict[product['name']].append(product)
+
+# 找出重複的商品並刪除
+deleted_products = []
+for product_name, product_list in product_dict.items():
+    if len(product_list) > 1:
+        # 保留第一個商品，刪除其餘的重複項
+        for product in product_list[1:]:
+            product_id = product['id']
+            delete_url = f"{API_URL}/{product_id}"
+            delete_response = requests.delete(delete_url, headers=headers, params={"force": True}, verify=False)
             if delete_response.status_code == 200:
-                print(f"成功刪除商品: {name} (ID: {duplicate_id})")
-            else:
-                print(f"刪除失敗: {name} (ID: {duplicate_id})")
-        else:
-            product_dict[name] = product['id']
+                deleted_products.append(product_name)
 
-    if not duplicate_found:
-        print("沒有重複商品")
+# 輸出被刪除的商品名稱
+if deleted_products:
+    print("刪除以下重複商品：")
+    for product_name in deleted_products:
+        print(product_name)
 else:
-    print(f"無法獲取商品列表，錯誤碼: {response.status_code}")
+    print("沒有發現需要刪除的重複商品。")
 

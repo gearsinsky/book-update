@@ -3,7 +3,7 @@ import os
 from woocommerce import API
 from urllib.parse import urlparse
 
-# 設定 WooCommerce API 憲證
+# 設定 WooCommerce API 憲註
 wcapi = API(
     url="http://54.199.115.191/",  # 替換為你的 WooCommerce 網站 URL
     consumer_key="ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a",  # 替換為你的 API Key
@@ -48,7 +48,7 @@ def extract_image_url(image_url):
     clean_url = parsed_url._replace(query=None).geturl()
     return clean_url
 
-# 處理價格的輔助函數，確保價格是數字字符串
+# 處理價格的輔助函數，確保價格是數字字串
 def clean_price(price):
     return price.replace('NT$', '').replace('$', '').strip()
 
@@ -131,17 +131,22 @@ def upload_product_to_woocommerce(product, existing_titles):
         print(f"跳過此商品，因為規格無法解析: {product['Title']}")
         return
 
-    # 取得分類 ID
-    category_id = get_category_id_by_name(product['Grade'])
-    if category_id is None:
-        print(f"跳過此商品，因為分類無法找到: {product['Title']}")
-        return
+    # 判斷作品的分類 ID
+    if product['Grade'] == '限制級':
+        category_id = 31
+    elif product['Grade'] == '普通級':
+        category_id = 32
+    else:
+        category_id = get_category_id_by_name(product['Grade'])
+        if category_id is None:
+            print(f"跳過此商品，因為分類無法找到: {product['Title']}")
+            return
 
     # 數據符合 WooCommerce 規格
     data = {
         "name": product['Title'],  # 只使用 Title
         "type": "simple",
-        "regular_price": modified_price,  # 價格必須是字符串格式
+        "regular_price": modified_price,  # 價格必須是字串格式
         "images": [{"src": image_url}],  # 使用處理後的圖片 URL
         "categories": [{"id": category_id}],  # 使用分類 ID 而不是名稱
         "dimensions": {
@@ -171,7 +176,7 @@ def upload_product_to_woocommerce(product, existing_titles):
 
 if __name__ == '__main__':
     # 設定 CSV 文件夾的路徑
-    csv_folder_path = '/home/ubuntu/books/stone/'  # 替換為包含所有 CSV 文件的文件夾路徑
+    csv_folder_path = '/home/ubuntu/books/stone/bl'  # 替換為包含所有 CSV 文件的文件夾路徑
 
     # 從多個 CSV 文件讀取並上傳產品
     upload_products_from_multiple_csvs(csv_folder_path)
