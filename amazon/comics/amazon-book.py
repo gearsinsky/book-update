@@ -23,7 +23,7 @@ driver = webdriver.Remote(
 
 # 設定要抓取的頁數
 start_page = 1
-end_page = 20
+end_page = 2
 
 # 保存書的資料
 book_data = []

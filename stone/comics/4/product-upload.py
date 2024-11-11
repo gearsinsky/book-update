@@ -176,7 +176,7 @@ def upload_product_to_woocommerce(product, existing_titles):
 
 if __name__ == '__main__':
     # 設定 CSV 文件夾的路徑
-    csv_folder_path = '/home/ubuntu/books/stone/bl'  # 替換為包含所有 CSV 文件的文件夾路徑
+    csv_folder_path = '/home/ubuntu/books/stone/comics/4'  # 替換為包含所有 CSV 文件的文件夾路徑
 
     # 從多個 CSV 文件讀取並上傳產品
     upload_products_from_multiple_csvs(csv_folder_path)

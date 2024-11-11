@@ -51,7 +51,7 @@ for page in range(start_page, end_page + 1):
 
     # Step 2: 進入書籍頁面
     try:
-        driver.get("https://www.kingstone.com.tw/book/pj/?buy=b0&page={page}")
+        driver.get(f"https://www.kingstone.com.tw/book/pj/?buy=b0&page={page}")
         wait.until(EC.presence_of_element_located((By.CLASS_NAME, "coverbox")))  # 等待書籍列表加載
     except TimeoutException:
         print(f"書籍頁面加載超時，頁面：{page}")
