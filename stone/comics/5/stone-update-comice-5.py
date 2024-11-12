@@ -51,7 +51,7 @@ for page in range(start_page, end_page + 1):
 
     # Step 2: 進入書籍頁面
     try:
-        driver.get(f"https://www.kingstone.com.tw/book/pf?buy=b0&sort=sa_desc&page={page}")
+        driver.get(f"https://www.kingstone.com.tw/book/pg/?buy=b0&page={page}")
         wait.until(EC.presence_of_element_located((By.CLASS_NAME, "coverbox")))  # 等待書籍列表加載
     except TimeoutException:
         print(f"書籍頁面加載超時，頁面：{page}")
@@ -161,7 +161,7 @@ for page in range(start_page, end_page + 1):
 
     # Step 5: 匯出成 CSV
     df = pd.DataFrame(book_data)
-    csv_filename = f"kingstone_books_page_{page}.csv"
+    csv_filename = f"/home/ubuntu/books/stone/comics/5/stone_books_comics_page_{page}.csv"
     df.to_csv(csv_filename, index=False, encoding="utf-8-sig")
 
     print(f"資料已匯出至 {csv_filename}")

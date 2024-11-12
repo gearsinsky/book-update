@@ -85,7 +85,7 @@ for page in range(start_page, end_page + 1):
 
     # Step 3: 每頁資料完成後出口成 CSV
     df = pd.DataFrame(book_data)
-    csv_filename = f"amazon_books_page_{page}.csv"
+    csv_filename = f"/home/ubuntu/books/amazon/comics/amazon_books_comics_page_{page}.csv" 
     df.to_csv(csv_filename, index=False, encoding="utf-8-sig")
     print(f"資料已匯出至 {csv_filename}")
 

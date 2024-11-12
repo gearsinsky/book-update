@@ -161,7 +161,7 @@ for page in range(start_page, end_page + 1):
 
     # Step 5: 匯出成 CSV
     df = pd.DataFrame(book_data)
-    csv_filename = f"kingstone_books_page_{page}.csv"
+    csv_filename = f"/home/ubuntu/books/stone/comics/9/stone_books_comics_page_{page}.csv"
     df.to_csv(csv_filename, index=False, encoding="utf-8-sig")
 
     print(f"資料已匯出至 {csv_filename}")

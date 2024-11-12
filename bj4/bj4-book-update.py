@@ -136,7 +136,7 @@ for page in range(start_page, end_page + 1):
 
     # Step 4: 將當前頁的資料儲存至 CSV 檔
     df = pd.DataFrame(book_data)
-    csv_filename = f'books_data_page_{page}.csv'
+    csv_filename = f"/home/ubuntu/books/bj4/bj4_books_bl_page_{page}.csv"
     df.to_csv(csv_filename, index=False, encoding='utf-8-sig')
     print(f"頁面 {page} 的資料已儲存至 {csv_filename}")
 
