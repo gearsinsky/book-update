@@ -3,7 +3,7 @@ import collections
 import base64
 
 # 配置 API 的基本資訊
-API_URL = "https://54.199.115.191/wp-json/wc/v3/products"
+API_URL = "https://54.95.181.247/wp-json/wc/v3/products"
 API_KEY = "ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a"
 API_SECRET = "cs_0b7d56a082508cc8543aab6765c5794698d7e5c3"
 
@@ -35,10 +35,16 @@ while True:
 
 print(f"總共獲取到 {len(products)} 個商品。")
 
+# 商品名稱標準化函數（保留括號中的數字）
+def normalize_name(name):
+    # 去掉空格和一些不影響區分的特殊字符，但保留括號和其中的數字
+    return name.replace(' ', '').lower()
+
 # 構建商品名稱對應的商品列表
 product_dict = collections.defaultdict(list)
 for product in products:
-    product_dict[product['name']].append(product)
+    normalized_name = normalize_name(product['name'])
+    product_dict[normalized_name].append(product)
 
 # 找出重複的商品並刪除
 deleted_products = []
@@ -50,7 +56,7 @@ for product_name, product_list in product_dict.items():
             delete_url = f"{API_URL}/{product_id}"
             delete_response = requests.delete(delete_url, headers=headers, params={"force": True}, verify=False)
             if delete_response.status_code == 200:
-                deleted_products.append(product_name)
+                deleted_products.append(product['name'])
 
 # 輸出被刪除的商品名稱
 if deleted_products:

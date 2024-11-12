@@ -4,7 +4,7 @@ import glob
 
 # WooCommerce API 設定
 wcapi = API(
-    url="http://54.199.115.191/",  # 替換為你的 WooCommerce 網址
+    url="http://54.95.181.247/",  # 替換為你的 WooCommerce 網址
     consumer_key="ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a", # 替換為你的 Consumer Key
     consumer_secret="cs_0b7d56a082508cc8543aab6765c5794698d7e5c3",   # 替換為你的 Consumer Secret
     version="wc/v3"
