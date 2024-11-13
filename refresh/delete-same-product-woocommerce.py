@@ -3,7 +3,7 @@ import collections
 import base64
 
 # 配置 API 的基本資訊
-API_URL = "https://54.95.181.247/wp-json/wc/v3/products"
+API_URL = "https://www.rising-shop-dg.com/wp-json/wc/v3/products"
 API_KEY = "ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a"
 API_SECRET = "cs_0b7d56a082508cc8543aab6765c5794698d7e5c3"
 
@@ -17,7 +17,7 @@ headers = {
 products = []
 page = 1
 while True:
-    response = requests.get(API_URL, headers=headers, params={"per_page": 100, "page": page}, verify=False)
+    response = requests.get(API_URL, headers=headers, params={"per_page": 100, "page": page})
     
     # 驗證請求是否成功
     if response.status_code != 200:
