@@ -4,8 +4,8 @@ import base64
 
 # 配置 API 的基本資訊
 API_URL = "https://www.rising-shop-dg.com/wp-json/wc/v3/products"
-API_KEY = "ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a"
-API_SECRET = "cs_0b7d56a082508cc8543aab6765c5794698d7e5c3"
+API_KEY = "ck_9dc6d71fd9641ef5015ca63f8517025921d4af14"
+API_SECRET = "cs_cf80237dd2cc105b7c4de08f2e1e793a0930e1d0"
 
 # 創建基本授權頭
 auth = base64.b64encode(f"{API_KEY}:{API_SECRET}".encode()).decode()

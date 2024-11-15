@@ -6,8 +6,8 @@ from urllib.parse import urlparse
 # 設定 WooCommerce API 憲證
 wcapi = API(
     url="https://www.rising-shop-dg.com/",
-    consumer_key="ck_7987669dbd82ab57e3e9a5f7b544a7dcbb603f3a",  # 替換為你的 API Key
-    consumer_secret="cs_0b7d56a082508cc8543aab6765c5794698d7e5c3",  # 替換為你的 API Secret
+    consumer_key="ck_9dc6d71fd9641ef5015ca63f8517025921d4af14",  # 替換為你的 API Key
+    consumer_secret="cs_cf80237dd2cc105b7c4de08f2e1e793a0930e1d0",  # 替換為你的 API Secret
     version="wc/v3"
 )
 

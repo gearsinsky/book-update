@@ -4,6 +4,10 @@ source /home/ubuntu/books/venv/bin/activate
 
 
 # stone/bl 更新
+#
+nohup python3 /home/ubuntu/books/stone/bl/stone-update-bl.py > /home/ubuntu/logs/stone-update-bl.py.log 2>/home/ubuntu/logs/stone-update-bl.py-error.log &
+wait
+
 nohup python3 /home/ubuntu/books/stone/bl/product-upload-with-csv.py > /home/ubuntu/logs/product-upload-with-csv.log 2>/home/ubuntu/logs/product-upload-with-csv-error.log &
 wait  # 等待當前指令執行完畢
 
