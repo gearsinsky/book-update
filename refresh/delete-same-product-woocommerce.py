@@ -54,9 +54,11 @@ for product_name, product_list in product_dict.items():
         for product in product_list[1:]:
             product_id = product['id']
             delete_url = f"{API_URL}/{product_id}"
-            delete_response = requests.delete(delete_url, headers=headers, params={"force": True}, verify=False)
+            delete_response = requests.delete(delete_url, headers=headers, params={"force": True})
             if delete_response.status_code == 200:
                 deleted_products.append(product['name'])
+            else:
+                print(f"無法刪除商品 {product['name']}，錯誤代碼：{delete_response.status_code}")
 
 # 輸出被刪除的商品名稱
 if deleted_products:

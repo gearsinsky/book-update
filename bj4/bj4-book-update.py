@@ -62,7 +62,7 @@ print("當前的 cookies:", cookies)
 # Step 2: 開始抓取書籍的資料
 # 設定要抓取的頁數
 start_page = 1
-end_page = 16
+end_page = 2
 
 # 設置書籍資料的帳號、價格、圖片 URL 的列表
 book_titles = []
