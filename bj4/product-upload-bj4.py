@@ -72,7 +72,7 @@ def upload_product_to_woocommerce(product, existing_titles):
     # 處理價格
     price = product['Price'].replace('NT$', '').replace('$', '').strip()
     try:
-        modified_price = str(round((float(price) / 4.2) * 2, 2))  # 價格修改為除以4.2再乘以2
+        modified_price = str(round((float(price) * 0.85 / 4.2 * 2), 2))  # 價格修改為除以4.2再乘以2
     except ValueError:
         print(f"跳過此商品，因為價格無法轉換為數字: {product['Title']}")
         return

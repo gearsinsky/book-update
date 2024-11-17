@@ -45,7 +45,7 @@ for title in titles:
             data = {
                 "stock_quantity": 0,
                 "stock_status": "outofstock",
-                "short_description": "尚無庫存，歡迎聯繫調貨"  # 新增的簡短說明
+                "short_description": "<h2><strong>暫無庫存可聯繫下方客服諮詢補貨</strong></h2>"  # 新增的簡短說明
             }
             update_response = wcapi.put(f"products/{product_id}", data)
 
