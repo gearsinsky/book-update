@@ -5,7 +5,19 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from dotenv import load_dotenv
+import os
 import pandas as pd
+
+
+load_dotenv(dotenv_path="/home/ubuntu/books/.env")
+
+# 讀取變數
+login_email = os.getenv("STONE_LOGIN_EMAIL")
+login_password = os.getenv("STONE_LOGIN_PASSWORD")
+
+print("STONE_LOGIN_EMAIL:", os.getenv("STONE_LOGIN_EMAIL"))
+print("STONE_LOGIN_PASSWORD:", os.getenv("STONE_LOGIN_PASSWORD"))
 
 # 設定 Selenium 遠端 WebDriver 配置
 selenium_hub_url = "http://localhost:4444/wd/hub"
@@ -35,11 +47,11 @@ for page in range(start_page, end_page + 1):
 
         # 使用顯式等待等待輸入框出現
         email_input = wait.until(EC.presence_of_element_located((By.ID, "loginID")))
-        email_input.send_keys("gearsinsky@gmail.com")
+        email_input.send_keys(login_email)
 
         # 輸入密碼
         password_input = driver.find_element(By.ID, "loginPW")
-        password_input.send_keys("qazwsx123e")
+        password_input.send_keys(login_password)
         password_input.send_keys(Keys.RETURN)  # 提交表單
 
         # 等待登入完成

@@ -1,11 +1,23 @@
 import requests
 import collections
 import base64
+from dotenv import load_dotenv
+import os
+import pandas as pd
+
+
+load_dotenv(dotenv_path="/home/ubuntu/books/.env")
+
+# 讀取變數
+woocommerce_key = os.getenv("CONSUMER_KEY")
+woocommerce_secret = os.getenv("CONSUMER_SECRET")
+print("woocommerce_key", os.getenv("CONSUMER_KEY"))
+print("woocommerce_secret", os.getenv("CONSUMER_SECRET"))
 
 # 配置 API 的基本資訊
 API_URL = "https://www.rising-shop-dg.com/wp-json/wc/v3/products"
-API_KEY = "ck_9dc6d71fd9641ef5015ca63f8517025921d4af14"
-API_SECRET = "cs_cf80237dd2cc105b7c4de08f2e1e793a0930e1d0"
+API_KEY =  woocommerce_key
+API_SECRET =  woocommerce_secret
 
 # 創建基本授權頭
 auth = base64.b64encode(f"{API_KEY}:{API_SECRET}".encode()).decode()

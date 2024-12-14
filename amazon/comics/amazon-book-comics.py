@@ -47,15 +47,15 @@ for page in range(start_page, end_page + 1):
         books = driver.find_elements(By.XPATH, "//div[@data-component-type='s-search-result']")
         for book in books:
             # 書名
+
             try:
-                title_element = book.find_element(By.XPATH, ".//span[@class='a-size-medium a-color-base a-text-normal']")
-                title = title_element.text
+                image_element = book.find_element(By.XPATH, ".//img[@class='s-image']")
+                title = image_element.get_attribute("alt")  # 從 alt 屬性抓書名
             except NoSuchElementException:
                 title = "N/A"
 
-            # 圖片 URL
+        # 圖片 URL
             try:
-                image_element = book.find_element(By.XPATH, ".//img[@class='s-image']")
                 image_url = image_element.get_attribute("src")
             except NoSuchElementException:
                 image_url = "N/A"

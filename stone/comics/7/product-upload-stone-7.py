@@ -2,12 +2,25 @@ import csv
 import os
 from woocommerce import API
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+import os
+import pandas as pd
+
+
+load_dotenv(dotenv_path="/home/ubuntu/books/.env")
+
+# 讀取變數
+woocommerce_key = os.getenv("CONSUMER_KEY")
+woocommerce_secret = os.getenv("CONSUMER_SECRET")
+print("woocommerce_key", os.getenv("CONSUMER_KEY"))
+print("woocommerce_secret", os.getenv("CONSUMER_SECRET"))
+
 
 # 設定 WooCommerce API 憲註
 wcapi = API(
     url="https://www.rising-shop-dg.com/",
-    consumer_key="ck_9dc6d71fd9641ef5015ca63f8517025921d4af14",  # 替換為你的 API Key
-    consumer_secret="cs_cf80237dd2cc105b7c4de08f2e1e793a0930e1d0",  # 替換為你的 API Secret
+    consumer_key= woocommerce_key,  # 替換為你的 API Key
+    consumer_secret= woocommerce_secret,  # 替換為你的 API Secret
     version="wc/v3"
 )
 

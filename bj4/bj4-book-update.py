@@ -5,10 +5,29 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import pandas as pd
+from dotenv import load_dotenv
 import time
+import os
+
+
+load_dotenv(dotenv_path="/home/ubuntu/books/.env")
+
+# 讀取變數
+BJ4_ACCOUNT = os.getenv("BJ4_ACCOUNT")
+BJ4_PASSWORD = os.getenv("BJ4_PASSWORD")
+catch_start_page = int(os.getenv("START_PAGE", 1))  # 預設值為 1
+catch_end_page = int(os.getenv("END_PAGE", 2))
+
+print("BJ4_ACCOUNT:", os.getenv("BJ4_ACCOUNT"))
+print("BJ4_PASSWORD:", os.getenv("BJ4_PASSWORD"))
+print("START_PAGE:", os.getenv("START_PAGE"))
+print("END_PAGE:", os.getenv("END_PAGE"))
+
 
 # 設定 Selenium 遠端 WebDriver 配置
 selenium_hub_url = "http://localhost:4444/wd/hub"
+
+
 
 # 設定 ChromeOptions，例如無頭模式等
 chrome_options = Options()
@@ -31,11 +50,11 @@ try:
 
     # 輸入帳號
     account_input = wait.until(EC.presence_of_element_located((By.ID, "account")))
-    account_input.send_keys("gearsinsky")  # 替換為你的帳號
+    account_input.send_keys(BJ4_ACCOUNT)  # 替換為你的帳號
 
     # 輸入密碼
     password_input = driver.find_element(By.ID, "password")
-    password_input.send_keys("qazwsx123E")  # 替換為你的密碼
+    password_input.send_keys(BJ4_PASSWORD)  # 替換為你的密碼
 
     # 點擊登入按鈕
     login_button = driver.find_element(By.CLASS_NAME, "bt-samp37.login_style")

@@ -29,4 +29,3 @@ CRON_JOBS=(
 for JOB in "${CRON_JOBS[@]}"; do
     (crontab -l 2>/dev/null | grep -F "$JOB") || (crontab -l 2>/dev/null; echo "$JOB") | crontab -
 done
-

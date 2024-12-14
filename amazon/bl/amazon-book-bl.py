@@ -32,7 +32,7 @@ book_data = []
 for page in range(start_page, end_page + 1):
     # Step 1: 載入 Amazon 書籍頁面
     try:
-        driver.get(f"https://www.amazon.co.jp/s?i=stripbooks&rh=n%3A12075851%2Cp_72%3A2227295051&s=featured-rank&language=zh&ref=Oct_d_otopr_S&page={page}")
+        driver.get(f"https://www.amazon.co.jp/-/zh/s?i=stripbooks&rh=n%3A12075851%2Cp_72%3A2227295051&s=featured-rank&page={page}")
         wait = WebDriverWait(driver, 10)
         wait.until(EC.presence_of_element_located((By.CLASS_NAME, "s-main-slot")))  # 等待主要書籍清單加載
     except TimeoutException:
@@ -47,19 +47,19 @@ for page in range(start_page, end_page + 1):
         books = driver.find_elements(By.XPATH, "//div[@data-component-type='s-search-result']")
         for book in books:
             # 書名
+
             try:
-                title_element = book.find_element(By.XPATH, ".//span[@class='a-size-medium a-color-base a-text-normal']")
-                title = title_element.text
+                image_element = book.find_element(By.XPATH, ".//img[@class='s-image']")
+                title = image_element.get_attribute("alt")  # 從 alt 屬性抓書名
             except NoSuchElementException:
                 title = "N/A"
 
-            # 圖片 URL
+        # 圖片 URL
             try:
-                image_element = book.find_element(By.XPATH, ".//img[@class='s-image']")
                 image_url = image_element.get_attribute("src")
             except NoSuchElementException:
                 image_url = "N/A"
-
+   
             # 價格
             try:
                 price_element = book.find_element(By.XPATH, ".//span[@class='a-price-whole']")
