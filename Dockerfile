@@ -1,0 +1,20 @@
+FROM python:3.12-slim
+
+# 設定時區
+ENV TZ=Asia/Taipei
+RUN apt-get update && \
+    apt-get install -y tzdata && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# 建立工作目錄
+WORKDIR /app
+
+# 複製 requirements 與原始碼
+COPY . .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# 確保 run.sh 有執行權限
+RUN chmod +x /app/shawn/shawn.sh
+
+# 容器啟動時執行 run.sh
+CMD ["./app/shawn/shawn.sh"]
